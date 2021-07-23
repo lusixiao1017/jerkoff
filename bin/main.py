@@ -7,10 +7,13 @@ from pygame.locals import *
 from config.settings import *
 from src.plane import OurPlane  # 导入我们的飞机
 from src.enemy import SmallEnemy
+from src.enemy import SmallEnemy2
+from src.enemy import SmallEnemy3
+from src.enemy import SmallEnemy4
 from src.bullet import Bullet
 
 
-bg_size = 480, 852  # 初始化游戏背景大小(宽, 高)
+bg_size = 650, 974  # 初始化游戏背景大小(宽, 高)
 screen = pygame.display.set_mode(bg_size)  # 设置背景对话框
 pygame.display.set_caption("飞机大战")  # 设置标题
 
@@ -39,11 +42,19 @@ def add_small_enemies(group1, group2, num):
         small_enemy = SmallEnemy(bg_size)
         group1.add(small_enemy)
         group2.add(small_enemy)
-
+        small_enemy2 = SmallEnemy2(bg_size)
+        group1.add(small_enemy2)
+        group2.add(small_enemy2)  
+        small_enemy3 = SmallEnemy3(bg_size)
+        group1.add(small_enemy3)
+        group2.add(small_enemy3)
+        small_enemy4 = SmallEnemy4(bg_size)
+        group1.add(small_enemy4)
+        group2.add(small_enemy4)
 
 def main():
     # 响应音乐
-    pygame.mixer.music.play(-1)  # loops 接收该参数, -1 表示无限循环(默认循环播放一次)
+    #pygame.mixer.music.play(-1)  # loops 接收该参数, -1 表示无限循环(默认循环播放一次)
     running = True
     switch_image = False  # 切换飞机的标识位(使飞机具有喷气式效果)
     delay = 60  # 对一些效果进行延迟, 效果更好一些
@@ -51,7 +62,7 @@ def main():
     enemies = pygame.sprite.Group()  # 生成敌方飞机组(一种精灵组用以存储所有敌机精灵)
     small_enemies = pygame.sprite.Group()  # 敌方小型飞机组(不同型号敌机创建不同的精灵组来存储)
 
-    add_small_enemies(small_enemies, enemies, 6)  # 生成若干敌方小型飞机
+    add_small_enemies(small_enemies, enemies, 2)  # 生成若干敌方小型飞机
 
     # 定义子弹, 各种敌机和我方敌机的毁坏图像索引
     bullet_index = 0
@@ -60,7 +71,7 @@ def main():
 
     # 定义子弹实例化个数
     bullet1 = []
-    bullet_num = 6
+    bullet_num = 4
     for i in range(bullet_num):
         bullet1.append(Bullet(our_plane.rect.midtop))
 
@@ -83,19 +94,19 @@ def main():
                 each.move()
                 screen.blit(each.image, each.rect)
 
-                pygame.draw.line(screen, color_black,
-                                 (each.rect.left, each.rect.top - 5),
-                                 (each.rect.right, each.rect.top - 5),
-                                 2)
+                #pygame.draw.line(screen, color_black,
+                                 #(each.rect.left, each.rect.top - 5),
+                                 #(each.rect.right, each.rect.top - 5),
+                                 #2)
                 energy_remain = each.energy / SmallEnemy.energy
                 if energy_remain > 0.2:  # 如果血量大约百分之二十则为绿色，否则为红色
                     energy_color = color_green
                 else:
                     energy_color = color_red
-                pygame.draw.line(screen, energy_color,
-                                 (each.rect.left, each.rect.top - 5),
-                                 (each.rect.left + each.rect.width * energy_remain, each.rect.top - 5),
-                                 2)
+                #pygame.draw.line(screen, energy_color,
+                                 #(each.rect.left, each.rect.top - 5),
+                                 #(each.rect.left + each.rect.width * energy_remain, each.rect.top - 5),
+                                 #2)
             else:
                 if e1_destroy_index == 0:
                     enemy1_down_sound.play()
